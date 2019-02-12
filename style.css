@@ -17,7 +17,7 @@ body {
     position: relative;
     height: 100vh;
     font-weight: 400;
-    color: white;
+    color: black;
 }
 
 .right {
@@ -84,4 +84,13 @@ body {
     text-align: center;
 }
 
+/* Bottom */
 
+h2 {
+    color: black;
+}
+.add {
+    padding: 14px;
+    border-bottom: 1px solid #e7e7e7;
+    background-color: #f7f7f7;
+}
