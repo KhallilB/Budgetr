@@ -32,6 +32,8 @@ body {
 .red { color: #FF5049 !important; }
 .red-focus:focus { border: 1px solid #FF5049 !important; }
 
+/******** Animations *********/
+
 .popout {
     /* animation: popout 1s ease;
     -webkit-animation: popout 1s ease; */
@@ -58,7 +60,7 @@ body {
     to{-webkit-transform:scale(1)}
 } */
 
-/* TOP */
+/******** Top *********/
 
 .top {
     height: 50vh;
@@ -148,7 +150,7 @@ body {
 }
 
 .add-type {
-    width: 50px;
+    width: 100px;
     border: solid 1px #e7e7e7;
     height: 44px;
     font-size: 18px;
@@ -156,7 +158,7 @@ body {
     font-family: inherit;
     background-color: #fff;
     margin-right: 10px;
-    font-weight: 300;
+    font-weight: 600;
     transition: border 0.3s;
 }
 
@@ -217,7 +219,7 @@ body {
 
 .container {
     width: 1000px;
-    margin-left: 25%;
+    margin-left: 12%;
     margin-top: 5%;
 }
 
@@ -244,8 +246,9 @@ h2 {
 }
 
 .item {
-    padding: 13px;
-    border-bottom: 1px solid #e7e7e7
+    padding: 40px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #e7e7e7;
 }
 
 .item:first-child {
