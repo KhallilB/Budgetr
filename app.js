@@ -1,7 +1,30 @@
+//CONTROLLER FOR BUDGET OBJECTS
 var budgetController = (function() {
-  //Code
+  var Expense = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  var Income = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  var data = {
+    allItems: {
+      expenses: [],
+      incomes: []
+    },
+    totals: {
+      expeses: 0,
+      incomes: 0
+    }
+  };
 })();
 
+//CONTROLLER FOR UI
 var UIController = (function() {
   //Stores all DOM elements
   var DOMstrings = {
@@ -28,6 +51,7 @@ var UIController = (function() {
   };
 })();
 
+//CONTROLLER FOR EVENTS
 var controller = (function(bugetCtrl, UICtrl) {
   var setupEventListeners = function() {
     document
