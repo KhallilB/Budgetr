@@ -14,19 +14,50 @@ var budgetController = (function() {
 
   var data = {
     allItems: {
-      expenses: [],
-      incomes: []
+      expense: [],
+      income: []
     },
     totals: {
-      expeses: 0,
-      incomes: 0
+      expese: 0,
+      income: 0
+    }
+  };
+
+  return {
+    addItem: function(type, desc, val) {
+      var newItem, ID;
+
+      //Creates new ID
+      //ID = last ID + 1
+      if (data.allItems[type].length > 0) {
+        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+      } else {
+        ID = 0;
+      }
+
+      //Create new item based on income or expense type
+      if (type === 'expense') {
+        newItem = new Expense(ID, desc, val);
+      } else if (type === 'income') {
+        newItem = new Income(ID, desc, val);
+      }
+
+      //Pushes to array based on type
+      data.allItems[type].push(newItem);
+
+      //Return new element
+      return newItem;
+    },
+
+    testing: function() {
+      console.log(data);
     }
   };
 })();
 
 //CONTROLLER FOR UI
 var UIController = (function() {
-  //Stores all DOM elements
+  //Stores DOM elements
   var DOMstrings = {
     inputType: '.add-type',
     inputDescription: '.add-description',
@@ -44,6 +75,12 @@ var UIController = (function() {
       };
     },
 
+    addListItem: function(obj, type) {
+      //Create HTML string with placeholder text
+      //Replace placeholder text with data
+      //Insert HTML into DOM
+    },
+
     //Returns all DOMstring elements for public access
     getDOMstrings: function() {
       return DOMstrings;
@@ -51,8 +88,10 @@ var UIController = (function() {
   };
 })();
 
-//CONTROLLER FOR EVENTS
-var controller = (function(bugetCtrl, UICtrl) {
+//CONTROLLER FOR ENTIRE APP
+var controller = (function(budgetCtrl, UICtrl) {
+  var DOM = UICtrl.getDOMstrings();
+
   var setupEventListeners = function() {
     document
       .querySelector(DOM.inputButton)
@@ -68,17 +107,20 @@ var controller = (function(bugetCtrl, UICtrl) {
     });
   };
 
-  var DOM = UICtrl.getDOMstrings();
-
   var ctrlAddItem = function() {
-    var input = UICtrl.getInput();
-    //TODO:
-    // get input data,
+    var input, newItem;
+
+    //Get input data
+    input = UICtrl.getInput();
+    console.log(input);
+
+    //Adds item to budget controller
+    newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+
     //add item to budget controller,
     // add new item to user,s
     //calculate budget,
     //display the budget
-    console.log(input);
   };
 
   //Initilizes all functions
