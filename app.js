@@ -48,6 +48,12 @@ const budgetController = (function() {
       return newItem;
     },
 
+    calculateBudget: function() {
+      // Calculate total income and expenses
+      // Calculate income - expenses
+      // Calculate percentage of income spent
+    },
+
     testing: function() {
       console.log(data);
     }
@@ -74,7 +80,7 @@ const UIController = (function() {
       return {
         type: document.querySelector(DOMstrings.inputType).value, //will either be value income or expense
         description: document.querySelector(DOMstrings.inputDescription).value,
-        value: document.querySelector(DOMstrings.inputValue).value
+        value: parseFloat(document.querySelector(DOMstrings.inputValue).value) //parsed to change string to an int
       };
     },
 
@@ -157,17 +163,19 @@ const controller = (function(budgetCtrl, UICtrl) {
     input = UICtrl.getInput();
     console.log(input);
 
-    //Adds item to budget controller
-    newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+    if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
+      //Adds item to budget controller
+      newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-    //Add item to the UI
-    UICtrl.addListItem(newItem, input.type);
+      //Add item to the UI
+      UICtrl.addListItem(newItem, input.type);
 
-    //Clear UI fields
-    UICtrl.clearFields();
+      //Clear UI fields
+      UICtrl.clearFields();
 
-    //calculate budget,
-    //display the budget
+      //Calculate and Updatae Budget
+      updateBudget();
+    }
   };
 
   //Initilizes app
