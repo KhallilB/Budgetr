@@ -11,15 +11,27 @@ const budgetController = (function() {
     this.value = value;
   };
 
+  const calculateTotal = function(type) {
+    var sum = 0;
+
+    data.allItems[type].forEach(function(current) {
+      sum += current.value;
+    });
+
+    data.totals[type] = sum;
+  };
+
   let data = {
     allItems: {
       expense: [],
       income: []
     },
     totals: {
-      expese: 0,
+      expense: 0,
       income: 0
-    }
+    },
+    budget: 0,
+    percentage: -1
   };
 
   return {
@@ -50,8 +62,29 @@ const budgetController = (function() {
 
     calculateBudget: function() {
       // Calculate total income and expenses
+      calculateTotal('expense');
+      calculateTotal('income');
+
       // Calculate income - expenses
+      data.budget = data.totals.income - data.totals.expense;
+
       // Calculate percentage of income spent
+      if (data.totals.income > 0) {
+        data.percentage = Math.round(
+          (data.totals.expense / data.totals.income) * 100
+        );
+      } else {
+        data.percentage = -1;
+      }
+    },
+
+    getBudget: function() {
+      return {
+        budget: data.totals,
+        totalIncome: data.totals.income,
+        totalExpenses: data.totals.expense,
+        percentage: data.percentage
+      };
     },
 
     testing: function() {
@@ -151,8 +184,13 @@ const controller = (function(budgetCtrl, UICtrl) {
 
   const updateBudget = function() {
     //Calculate Budget
+    budgetCtrl.calculateBudget();
+
     //Return Budget
+    let budget = budgetCtrl.getBudget();
+
     //Display Budget on UI
+    console.log(budget);
   };
 
   //Adds new item to list
