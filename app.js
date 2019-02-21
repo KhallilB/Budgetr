@@ -80,7 +80,7 @@ const budgetController = (function() {
 
     getBudget: function() {
       return {
-        budget: data.totals,
+        budget: data.budget,
         totalIncome: data.totals.income,
         totalExpenses: data.totals.expense,
         percentage: data.percentage
@@ -104,7 +104,11 @@ const UIController = (function() {
     inputValue: '.add-value',
     inputButton: '.add-button',
     incomeContainer: '.income-list',
-    expenseContainer: '.expenses-list'
+    expenseContainer: '.expenses-list',
+    budgetLabel: '.budget-value',
+    incomeLabel: '.budget-income-value',
+    expenseLabel: '.budget-expenses-value',
+    percentageLabel: '.budget-expenses-percentage'
   };
 
   return {
@@ -117,7 +121,7 @@ const UIController = (function() {
       };
     },
 
-    addListItem: function(item, type) {
+    addListItem: function(obj, type) {
       let html, newHtml, element;
       //Create HTML string with placeholder text
       if (type === 'income') {
@@ -131,9 +135,9 @@ const UIController = (function() {
       }
 
       //Replace placeholder text with data
-      newHtml = html.replace('%id%', item.id);
-      newHtml = newHtml.replace('%description%', item.description);
-      newHtml = newHtml.replace('%value%', item.value);
+      newHtml = html.replace('%id%', obj.id);
+      newHtml = newHtml.replace('%description%', obj.description);
+      newHtml = newHtml.replace('%value%', obj.value);
 
       //Insert HTML into DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -153,6 +157,17 @@ const UIController = (function() {
       });
 
       fieldsArr[0].focus();
+    },
+
+    //Display Budget Updates on UI
+    displayBudget: function(obj) {
+      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMstrings.incomeLabel).textContent =
+        obj.totalIncome;
+      document.querySelector(DOMstrings.expenseLabel).textContent =
+        obj.totalExpenses;
+      document.querySelector(DOMstrings.percentageLabel).textContent =
+        obj.percentage;
     },
 
     //Returns all DOMstring elements for public access
@@ -187,9 +202,10 @@ const controller = (function(budgetCtrl, UICtrl) {
     budgetCtrl.calculateBudget();
 
     //Return Budget
-    let budget = budgetCtrl.getBudget();
+    var budget = budgetCtrl.getBudget();
 
     //Display Budget on UI
+    UICtrl.displayBudget(budget);
     console.log(budget);
   };
 
@@ -211,7 +227,7 @@ const controller = (function(budgetCtrl, UICtrl) {
       //Clear UI fields
       UICtrl.clearFields();
 
-      //Calculate and Updatae Budget
+      //Calculate and Update Budget
       updateBudget();
     }
   };
