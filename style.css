@@ -314,11 +314,17 @@ h2 {
     display: inline-block;
     vertical-align: middle;
     line-height: 1;
-    display: none;
+    margin-left: 5px;
+    margin-bottom: 15px;
 }
 
 .item-delete-btn:focus {
     outline: none;
+    
+}
+
+.item-delete-btn:hover {
+    color: black;
 }
 
 .item-delete-btn:active {

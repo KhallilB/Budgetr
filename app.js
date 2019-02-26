@@ -161,6 +161,13 @@ const UIController = (function() {
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
     },
 
+    //Deletes Item from Lists
+    deleteListItem: function(selectID) {
+      let element = document.getElementById(selectID);
+      element.parentNode.removeChild(element);
+    },
+
+    //Clears input fields after each entry the focuses on description field
     clearFields: function() {
       let fields, fieldsArr;
 
@@ -290,6 +297,12 @@ const controller = (function(budgetCtrl, UICtrl) {
 
     //Delete item from budget controller
     budgetCtrl.deleteItem(type, id);
+
+    //Delete item from UI
+    UICtrl.deleteListItem(itemID);
+
+    //Update Budget
+    updateBudget();
   };
 
   //Initilizes app
