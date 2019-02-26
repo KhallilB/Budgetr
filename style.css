@@ -219,12 +219,19 @@ body {
 
 .container {
     width: 1000px;
-    margin-left: 12%;
-    margin-top: 5%;
+    margin-left: 20%;
+    margin-top: 5%; 
+
 }
 
 .income {
     float: left;
+    width: 475px;
+    margin-right: 50px;
+}
+
+.expenses {
+    float: right;
     width: 475px;
 }
 
@@ -245,10 +252,17 @@ h2 {
     color: #FF5049;
 }
 
-.item {
+.item-expense {
     padding: 40px;
     margin-bottom: 2px;
-    border-bottom: 1px solid #e7e7e7;
+    border-top: 5px solid #e7e7e7;
+    /* border-bottom: 1px solid #e7e7e7; */
+}
+
+.item-income {
+    padding: 40px;
+    margin-bottom: 2px;
+    border-top: 5px solid #e7e7e7
 }
 
 .item:first-child {
