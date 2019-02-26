@@ -87,6 +87,22 @@ const budgetController = (function() {
       };
     },
 
+    deleteItem: function(type, id) {
+      let ids, index;
+
+      ids = data.allItems[type].map(function(current) {
+        console.log(current.id);
+        return current.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+        console.log(data.allItems);
+      }
+    },
+
     testing: function() {
       console.log(data);
     }
@@ -108,7 +124,9 @@ const UIController = (function() {
     budgetLabel: '.budget-value',
     incomeLabel: '.budget-income-value',
     expenseLabel: '.budget-expenses-value',
-    percentageLabel: '.budget-expenses-percentage'
+    percentageLabel: '.budget-expenses-percentage',
+    itemPercentageLabel: '.item-percentage',
+    container: '.container'
   };
 
   return {
@@ -161,13 +179,32 @@ const UIController = (function() {
 
     //Display Budget Updates on UI
     displayBudget: function(obj) {
-      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+      // if (obj.totalIncome > obj.totalExpenses) {
+      //   document.querySelector(DOMstrings.budgetLabel).textContent =
+      //     '$ ' + obj.budget;
+      //   document.querySelector(DOMstrings.incomeLabel).textContent =
+      //     '$ ' + obj.totalIncome;
+      //   document.querySelector(DOMstrings.expenseLabel).textContent =
+      //     '$ ' + obj.totalExpenses;
+      // } else {
+      //   document.querySelector(DOMstrings.budgetLabel).textContent = '---';
+      //   document.querySelector(DOMstrings.incomeLabel).textContent = '---';
+      //   document.querySelector(DOMstrings.expenseLabel).textContent = '---';
+      // }
+
+      document.querySelector(DOMstrings.budgetLabel).textContent =
+        '$ ' + obj.budget;
       document.querySelector(DOMstrings.incomeLabel).textContent =
-        obj.totalIncome;
+        '$ ' + obj.totalIncome;
       document.querySelector(DOMstrings.expenseLabel).textContent =
-        obj.totalExpenses;
-      document.querySelector(DOMstrings.percentageLabel).textContent =
-        obj.percentage;
+        '$ ' + obj.totalExpenses;
+
+      if (obj.percentage > 0) {
+        document.querySelector(DOMstrings.percentageLabel).textContent =
+          obj.percentage + ' %';
+      } else {
+        document.querySelector(DOMstrings.percentageLabel).textContent = '---';
+      }
     },
 
     //Returns all DOMstring elements for public access
@@ -183,18 +220,24 @@ const controller = (function(budgetCtrl, UICtrl) {
   let DOM = UICtrl.getDOMstrings();
 
   const setupEventListeners = function() {
+    //Event listener for adding an item
     document
       .querySelector(DOM.inputButton)
       .addEventListener('click', ctrlAddItem);
 
+    //Handles enter event when submiting to list
     document.addEventListener('keypress', function(e) {
-      //Handles enter event when submiting to list
       if (e.keyCode === 13 || e.which === 13) {
         //For older browsers who dont have key code property
         console.log('ENTER was pressed');
         ctrlAddItem();
       }
     });
+
+    //Event Listener for delete
+    document
+      .querySelector(DOM.container)
+      .addEventListener('click', ctrlDeleteItem);
   };
 
   const updateBudget = function() {
@@ -232,11 +275,34 @@ const controller = (function(budgetCtrl, UICtrl) {
     }
   };
 
+  const ctrlDeleteItem = function(e) {
+    let itemID, splitID, type, id;
+
+    //Accessing id through DOM traversing
+    itemID = e.target.parentNode.parentNode.parentNode.id;
+
+    //Splitting the id from the type
+    if (itemID) {
+      splitID = itemID.split('-');
+      type = splitID[0];
+      id = parseInt(splitID[1]);
+    }
+
+    //Delete item from budget controller
+    budgetCtrl.deleteItem(type, id);
+  };
+
   //Initilizes app
   return {
     init: function() {
       console.log('Application has started');
       setupEventListeners();
+      UICtrl.displayBudget({
+        budget: 0,
+        totalIncome: 0,
+        totalExpenses: 0,
+        percentage: -1
+      });
     }
   };
 })(budgetController, UIController);
